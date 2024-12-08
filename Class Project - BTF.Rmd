@@ -285,19 +285,30 @@ ggplot(PaTxLong) +
 
 From this side-by-side graph, we can see how in recent years, Pennsylvanians have hunted deer at a gradually decreasing rate, while Texans have been hunting deer at a gradually increasing rate.
 
-Around the turn of the century, the PA harvest was three-quarters the size of the TX harvest, but now is less than half.
+Around the turn of the century, the PA harvest was about four-fifths the size of the TX harvest, but is now less than half.
 
 ___
 
 ## Analysis No. 3: Pennsylvania Big Game
 
 ```{r}
+PAtotals <- PAdeerharvest %>%
+  select(year, totalDeer, bear, totalElk, totalTurkey) %>%
+  mutate(total = totalDeer + bear + totalElk + totalTurkey)
+
+PAbucks <- PAdeerharvest %>%
+  select(year, buck) %>%
+  left_join(PAtotals %>% select(year, total))
+
+PAbucks %>%
+  mutate(proportion = buck / total) %>%
+  summarise(summaryProp = mean(proportion, na.rm=TRUE))
 
 ```
 
+Finally, I want to know exactly how much of Pennsylvania's big game harvests include the iconic white-tailed buck. And here we find out that buck harvests make up 32.6% of all big game animal harvests in PA.
+
+___
 
 
-
-
-
-
+End of file.
