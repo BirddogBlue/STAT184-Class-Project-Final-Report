@@ -232,11 +232,72 @@ ___
 
 Next, I would like to compare the harvest data out of Pennsylvania to harvest and population data from other states.
 
+```{r fig.height=5, fig.width=7}
+# data
+TxNv <- TXdeerpop %>%
+  select(Year, Total) %>%
+  inner_join(NVdeerpop %>% select(Year, Population))
+
+colnames(TxNv) <- c("year", "TX", "NV")
+
+TxNvLong <- TxNv %>%
+  pivot_longer(cols = c(TX, NV), 
+               names_to = "state", 
+               values_to = "population")
+
+ggplot(TxNvLong) +
+  aes(x = year, y = population, fill = state) +
+  geom_area() +
+  scale_fill_hue(direction = 1) +
+  labs(title = "Combined Deer Population of Texas and Nevada", subtitle = "The states with the highest and the lowest deer populations.", color = "State") +
+  xlab("Year") + ylab("Total Population Size") +
+  theme_minimal()
+
+```
+
+The population of deer in Nevada seems almost entirely insignificant compared to that of Texas.
+
+```{r fig.height=5, fig.width=7}
+# data
+PaTx <- PAdeerharvest %>%
+  select(year, totalDeer) %>%
+  inner_join(TXdeerpop %>% select(Year, Hunt), by=c("year"="Year"))
+
+colnames(PaTx) <- c("year", "PA", "TX")
+
+PaTxLong <- PaTx %>%
+  pivot_longer(cols = c(PA, TX), 
+               names_to = "state", 
+               values_to = "harvests")
+
+ggplot(PaTxLong) +
+  aes(x = year, y = harvests, fill = state) +
+  geom_area() +
+  scale_fill_hue(direction = 1) +
+  labs(title = "Side-by-Side Pennsylvania and Texas Deer Harvest", fill = "State") +
+  xlab("Year") + ylab("Deer Havest") +
+  theme_minimal() +
+  facet_wrap(vars(state))
 
 
+```
 
 
+From this side-by-side graph, we can see how in recent years, Pennsylvanians have hunted deer at a gradually decreasing rate, while Texans have been hunting deer at a gradually increasing rate.
+
+Around the turn of the century, the PA harvest was three-quarters the size of the TX harvest, but now is less than half.
 
 ___
 
 ## Analysis No. 3: Pennsylvania Big Game
+
+```{r}
+
+```
+
+
+
+
+
+
+
