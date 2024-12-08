@@ -169,7 +169,7 @@ It isn't perfect, but the variables we want are ready for analysis.
 
 ___
 
-## Analysis
+## Analysis No. 1: State-vs-National
 
 Let's begin by looking at the US deer population and PA deer harvest data.
 
@@ -191,11 +191,52 @@ ggplot(USdeerpopLong) +
   theme_minimal()
 ```
 
-```{r}
+```{r fig.height=5, fig.width=7}
 # plot PAdeer with USdeer whitetails
+
+# data
+USPAwhitetails <-
+  USdeerpop %>%
+  select(year, whitetail) %>%
+  inner_join(PAdeerharvest %>% select(year, totalDeer))
+
+colnames(USPAwhitetails) <- c("Year", "US_Whitetails", "PA_Whitetails")
+# scale for visual aid
+USPAwhitetails <- USPAwhitetails %>%
+  mutate(US_Whitetails = US_Whitetails * 10000)
+
+USPAWTlong <- USPAwhitetails %>%
+  pivot_longer(cols = c(US_Whitetails, PA_Whitetails), 
+               names_to = "scope", 
+               values_to = "totals")
+
+ggplot(USPAWTlong) +
+  aes(x = Year, y = totals, colour = scope) +
+  geom_line() +
+  scale_color_hue(direction = 1) +
+    labs(title = "Scaled US Deer Pop. vs. PA Deer Harvest, Representing Population Growth", color = "Scope") +
+  ylab("Scaled Population vs Harvest") +
+  theme_minimal()
 
 ```
 
+This graph allows us to see the acceleration in PA Whitetail harvests relative to the growth of the estimated US Whitetail population.
+
+I mentioned earlier how the Pennsylvania state government uses yearly harvest data to gain an understanding of the state's current deer population. From this graph, we see that the deer population in PA has likely been accelerating at a rate faster than the national average, but also may have been more impacted by over-harvest than other states, at least in terms of white tailed deer, and assuming the current harvest data is indicative of herd size.
+
+Pennsylvania is well-known for its Whitetails after all!
+
+___
+
+## Analysis No. 2: State-vs-State
+
+Next, I would like to compare the harvest data out of Pennsylvania to harvest and population data from other states.
 
 
 
+
+
+
+___
+
+## Analysis No. 3: Pennsylvania Big Game

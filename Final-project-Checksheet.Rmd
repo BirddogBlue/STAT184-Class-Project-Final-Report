@@ -36,9 +36,11 @@ output:  html_notebook
 
 (B) .Rmd Line number(s) for a join operation: 
 
+* 197-201
 
 (C) .Rmd Line number(s) for a spread or gather operation (or equivalent):
 
+* 177-181, 208-211
 
 (D) .Rmd Line number(s) for use of regular expressions: 
 
@@ -46,7 +48,6 @@ output:  html_notebook
 
 (E) .Rmd Line number(s) for use of reduction and/or transformation functions: 
 
-* lines 127-137
 
 (F) .Rmd Line number(s) for use of user-defined functions: 
 
@@ -65,9 +66,15 @@ output:  html_notebook
 
 (A) .Rmd Line number(s) for use of mulitple different geoms:  
 
+* 184-221
+
 (B) .Rmd Line number(s) for use of multiple aesthetics:  
 
+* 184-221
+
 (C) .Rmd Line number(s) for use of layered graphics:  
+
+* 184-221
 
 (D) .Rmd Line number(s) for use of leaflet maps:  
 
