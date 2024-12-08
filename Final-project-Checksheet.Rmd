@@ -32,6 +32,7 @@ output:  html_notebook
 
 (A) .Rmd Line number(s) for general data wrangling: 
 
+* lines 105-156
 
 (B) .Rmd Line number(s) for a join operation: 
 
@@ -41,9 +42,11 @@ output:  html_notebook
 
 (D) .Rmd Line number(s) for use of regular expressions: 
 
+* lines 108-121
 
 (E) .Rmd Line number(s) for use of reduction and/or transformation functions: 
 
+* lines 127-137
 
 (F) .Rmd Line number(s) for use of user-defined functions: 
 

@@ -68,6 +68,8 @@ All data is collected by government entities and compiled by Deer Friendly.
 
 ___
 
+# Data Import and Initial Wrangling
+
 ```{r}
 # data import
 PAdeerharvest <- read_excel("PAdeerharvest.xlsx")
@@ -90,9 +92,110 @@ Further inspection of the source webpage for the USdeerpop dataset tells us that
 
 It is also clear from my research that Pennsylvania does not publish data on estimated deer population sizes like other states do, but rather publish the harvest data from yearly hunting seasons, using this as an indicator for the deer population. This is unfortunate, but the TXdeerpop dataset features a 'Hunt' variable, so this can be directly compared with data from the PAdeerharvest data.
 
+Many of the columns also have messy spaces, so we will rename them to be better understood within the program here.
+
 ```{r}
+PAdeerharvest %>%
+  filter(grepl(".{5,}", year))
+```
+
+It appears the original data contained some asterisks in the year and other variables.
+
+```{r}
+# wrangling some data
+colnames(PAdeerharvest) <- c("year", "buck", "doe", "totalDeer", "bear", "springTurkey", "fallTurkey", "bullElk", "cowElk", "totalElk")
+
+pattern01 <- "\\D"
+
+# removing any non numeric characters
+PAdeerharvest <- PAdeerharvest %>%
+  mutate(year = gsub(pattern = pattern01, replacement = "", year)) %>%
+  mutate(buck = gsub(pattern = pattern01, replacement = "", buck)) %>%
+  mutate(doe = gsub(pattern = pattern01, replacement = "", doe)) %>%
+  mutate(totalDeer = gsub(pattern = pattern01, replacement = "", totalDeer)) %>%
+  mutate(bear = gsub(pattern = pattern01, replacement = "", bear)) %>%
+  mutate(springTurkey = gsub(pattern = pattern01, replacement = "", springTurkey)) %>%
+  mutate(fallTurkey = gsub(pattern = pattern01, replacement = "", fallTurkey)) %>%
+  mutate(bullElk = gsub(pattern = pattern01, replacement = "", bullElk)) %>%
+  mutate(cowElk = gsub(pattern = pattern01, replacement = "", cowElk)) %>%
+  mutate(totalElk = gsub(pattern = pattern01, replacement = "", totalElk))
 
 ```
+
+```{r}
+PAdeerharvest <- PAdeerharvest %>%
+  mutate(year = as.numeric(year)) %>%
+  mutate(buck = as.numeric(buck)) %>%
+  mutate(doe = as.numeric(doe)) %>%
+  mutate(totalDeer = as.numeric(totalDeer)) %>%
+  mutate(bear = as.numeric(bear)) %>%
+  mutate(springTurkey = as.numeric(springTurkey)) %>%
+  mutate(fallTurkey = as.numeric(fallTurkey)) %>%
+  mutate(totalTurkey = springTurkey + fallTurkey, na.rm=TRUE) %>%
+  mutate(bullElk = as.numeric(bullElk)) %>%
+  mutate(cowElk = as.numeric(cowElk)) %>%
+  mutate(totalElk = as.numeric(totalElk))
+
+```
+
+```{r}
+PAdeerharvest %>% head()
+```
+
+That looks better!
+
+The other datasets should be a bit easier to tidy up.
+
+```{r}
+# USdeerpop
+colnames(USdeerpop) <- c("year", "totalDeer", "whitetail", "muleAndBlacktail")
+
+# TXdeerpop
+TXdeerpop <- TXdeerpop %>%
+  mutate(Total = gsub(pattern = pattern01, replacement = "", Total)) %>%
+  mutate(Total = as.numeric(Total))
+
+```
+
+
+
+```{r}
+USdeerpop  %>% head()
+TXdeerpop  %>% head()
+NVdeerpop  %>% head()
+```
+
+It isn't perfect, but the variables we want are ready for analysis.
+
+___
+
+## Analysis
+
+Let's begin by looking at the US deer population and PA deer harvest data.
+
+```{r}
+# narrow USdeerpop for deerType variable
+USdeerpopLong <- USdeerpop %>%
+  pivot_longer(cols = c(whitetail, muleAndBlacktail), 
+               names_to = "deerType", 
+               values_to = "totalByType")
+```
+
+```{r fig.height=5, fig.width=7}
+ggplot(USdeerpopLong) +
+  geom_point(aes(x = year, y = totalByType, colour = deerType, shape = deerType)) +
+  geom_line(aes(x = year, y = totalDeer)) +
+  labs(title = "U.S. Deer Historical Deer Population", shape = "Deer Species", color = "Deer Species") +
+  xlab("Year") + ylab("Population Size in Millions of Deer") +
+  scale_color_hue(direction = 1) +
+  theme_minimal()
+```
+
+```{r}
+# plot PAdeer with USdeer whitetails
+
+```
+
 
 
 
