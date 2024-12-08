@@ -191,6 +191,12 @@ ggplot(USdeerpopLong) +
   theme_minimal()
 ```
 
+This graph visualizes the historical estimated US deer population data, with a line representing the total population and shape/color coded points depicting the populations of different species of deer. 
+
+It becomes obvious that there are and almost always have been far more white tailed deer than mule deer and black tailed deer combined.
+
+The populations of all three of these deer species suffered near extinction around 1900. What is perhaps most interesting about this visualization is that it appears the whitetail population rebounded very successfully, while the mule deer and blacktail populations experience a much more turbulent growth, if it could be labeled much of a growth at all!
+
 ```{r fig.height=5, fig.width=7}
 # plot PAdeer with USdeer whitetails
 
@@ -306,7 +312,7 @@ PAbucks %>%
 
 ```
 
-Finally, I want to know exactly how much of Pennsylvania's big game harvests include the iconic white-tailed buck. And here we find out that buck harvests make up 32.6% of all big game animal harvests in PA.
+Finally, I want to know exactly how much of Pennsylvania's big game harvests include the iconic white-tailed buck. And here we find out that buck harvests make up 32.6% of all big game animal harvests in PA!
 
 ___
 
